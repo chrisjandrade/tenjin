@@ -29,28 +29,24 @@ module.exports = function (config) {
     },
 
     locateFaces: async function (image) {
-      let faces;
+      let faces = [];
 
       try {
         faces = await service.detector.locateFaces(image);
       } catch (e) {
         service.logger.error('Couldn\'t locate faces', e);
-      } finally {
-        faces = [];
       }
 
       return faces;
     },
 
     detectFaces: async function (image) {
-      let faceImages;
+      let faceImages = [];
 
       try {
         faceImages = await service.detector.detectFaces(image);
       } catch (e) {
         service.logger.error('Couldn\'t detect faces', e);
-      } finally {
-        faceImages = [];
       }
 
       return faceImages;
