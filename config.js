@@ -1,5 +1,6 @@
 
 module.exports = {
   PORT: 3000,
-  HOST: 'localhost'
+  HOST: 'localhost',
+  SCRAPE_DIR_POSTFIX: '**/*'
 };

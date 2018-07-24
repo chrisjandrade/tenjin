@@ -19,9 +19,8 @@ module.exports = function (config) {
         faceImages = await service.detectFaces(image);
       
       return {
-        path: fd,
-        faceRectangles,
-        faceImages
+        file: fd,
+        facialRecognition: { faceRectangles, faceImages }
       };
     },
 
