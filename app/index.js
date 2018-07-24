@@ -1,44 +1,22 @@
-const Hapi = require('hapi'),
-  path = require('path'),
-  inert = require('inert');
+const express = require('express'),
+  path = require('path');
 
 module.exports = function (config) {
 
-  const server = Hapi.Server({
-    host: config.HOST,
-    port: config.PORT,
-    routes: {
-      files: {
-        relativeTo: path.join(__dirname, '../public')
-      }
-    }
+  const app = express();
+  app.logger = config.logger;
+
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
   });
 
-  async function provision() {
-    try {
-      server.logger = config.logger;
-      await server.register(inert);
+  app.use('/', express.static('public/'));
 
-      server.route({
-        method: 'GET',
-        path: '/{param*}',
-        handler: {
-          directory: {
-            path: '.',
-            redirectToSlash: true,
-            index: ['in']
-          }
-        }
-      });
+	app.listen(config.PORT, config.HOST, () => {
+    app.logger.info(`Tenjin is running at ${config.HOST} on port ${config.PORT}`);
+  });
 
-      await server.start();
-      server.logger.info(`Tenjin running at ${config.HOST}:${config.PORT}`);
-    } catch (e) {
-      server.logger.error('An error occured trying to provision tenjin', e);
-      Process.exit(1);
-    }
-  }
-
-  provision();
-  return server;
+  return app;
 };

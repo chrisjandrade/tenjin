@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 import { Navbar, NavbarGroup, NavbarHeading, Alignment } from '@blueprintjs/core';
 
+import '@blueprintjs/core/lib/css/blueprint.css';
+
 class App extends React.Component {
 
 	routingComponents = {
@@ -16,10 +18,10 @@ class App extends React.Component {
 
 		return (
 			<Router>
-				<div className="app-container">
+				<div className="app-container bp3-dark">
 					<Navbar fixedToTop>
             <NavbarGroup align={ Alignment.LEFT }>
-              <NavbarHeading>Tenjin</NavbarHeading>
+              <NavbarHeading>TENJIN</NavbarHeading>
             </NavbarGroup>
           </Navbar>
 

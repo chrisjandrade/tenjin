@@ -8,6 +8,9 @@ module.exports = (function () {
     transports: [
       new Console({
         format: format.simple()
+      }),
+      new File({
+        filename: '/logs/tenjin.log'
       })
     ]
   });
