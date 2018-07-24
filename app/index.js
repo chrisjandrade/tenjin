@@ -1,6 +1,8 @@
 const express = require('express'),
   path = require('path');
 
+const ImageController = require('./controllers/image');
+
 module.exports = function (config) {
 
   const app = express();
@@ -13,6 +15,9 @@ module.exports = function (config) {
   });
 
   app.use('/', express.static('public/'));
+
+  app.imageController = ImageController(config);
+  app.put('/api/image/scrape', app.imageController.scrape);
 
 	app.listen(config.PORT, config.HOST, () => {
     app.logger.info(`Tenjin is running at ${config.HOST} on port ${config.PORT}`);
