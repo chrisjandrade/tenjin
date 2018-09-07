@@ -1,6 +1,8 @@
 const _ = require('lodash'),
   FacialRecognition = require('../services/facial-recognition'),
-  FileService = require('../services/file');
+  FileService = require('../services/file'),
+  DB = require('../services/db'),
+  { ImageSchema, ImageModel } = require('../models/image');
 
 module.exports = function (config) {
 
@@ -8,6 +10,7 @@ module.exports = function (config) {
 
     facialRecognition: FacialRecognition(config),
     fileService: FileService(config),
+    db: DB(config),
 
     _findImageFiles: async function (dir) {
       const files = await controller.fileService.analyzeAllFiles(dir);
@@ -24,16 +27,30 @@ module.exports = function (config) {
     scrape: async function (req, res) {
       const { directory } = req.query;
 
+      if (!controller.db.isConnected) {
+        await controller.db.connect();
+      }
+
       if (_.isEmpty(directory)) {
         res.status(400).json({
           error: 'Request expects query parameter "directory"'
         });
       } else {
+        res.json({ success: true });
+
         let images = await controller._findImageFiles(directory);
           
         try {
-          res.json({
-            images: await Promise.all(_.map(images, image => controller._analyzeImage(image)))
+          const analyzedImages = await Promise.all(_.map(images, image => controller._analyzeImage(image)));
+
+          _.each(analyzedImages, image => {
+            const { file, mimeType, facialRecognition } = image;
+
+            ImageModel.create({ file, mimeType, metadata: [ facialRecognition ]}, (err, model) => {
+              if (err) {
+                console.error('Failed to save image model', err);
+              }
+            });
           });
         } catch (e) {
           res.status(500).json({
