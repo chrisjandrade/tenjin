@@ -1,8 +1,9 @@
 const _ = require('lodash'),
+  path = require('path'),
   FacialRecognition = require('../services/facial-recognition'),
   FileService = require('../services/file'),
   DB = require('../services/db'),
-  { ImageSchema, ImageModel } = require('../models/image');
+  { ImageModel } = require('../models/image');
 
 module.exports = function (config) {
 
@@ -25,7 +26,7 @@ module.exports = function (config) {
     },
 
     scrape: async function (req, res) {
-      const { directory } = req.query;
+      const directory = path.join(__dirname, '../../data');
 
       if (!controller.db.isConnected) {
         await controller.db.connect();

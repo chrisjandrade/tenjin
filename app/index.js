@@ -1,5 +1,4 @@
-const express = require('express'),
-  path = require('path');
+const express = require('express');
 
 const ImageController = require('./controllers/image');
 

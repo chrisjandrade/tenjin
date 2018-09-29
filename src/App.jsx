@@ -1,21 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route, Link } from "react-router-dom";
-import { Navbar, NavbarGroup, NavbarHeading, Alignment } from '@blueprintjs/core';
-
+import { Navbar, NavbarGroup, NavbarHeading, Alignment, Button } from '@blueprintjs/core';
 import '@blueprintjs/core/lib/css/blueprint.css';
+
+import AnalyzeService from './services/analyze-service';
 
 class App extends React.Component {
 
-	routingComponents = {
-		// ResumeComponent: () => {
-		// 	return (<Resume/>);
-		// }
+	analyzeService = new AnalyzeService();
+
+	analyze = () => {
+		this.analyzeService.analyze();
 	};
 
 	render() {
-		const { ResumeComponent } = this.routingComponents;
-
 		return (
 			<Router>
 				<div className="app-container bp3-dark">
@@ -23,9 +22,11 @@ class App extends React.Component {
             <NavbarGroup align={ Alignment.LEFT }>
               <NavbarHeading>TENJIN</NavbarHeading>
             </NavbarGroup>
+						<NavbarGroup align={ Alignment.RIGHT }>
+							<Button icon="folder-new" onClick={ this.analyze }>Analyze</Button>
+						</NavbarGroup>
           </Navbar>
 
-          TODO: put content here.
     		</div>
 			</Router>
 		);

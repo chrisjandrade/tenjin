@@ -1,3 +1,8 @@
 .app-container {
   border: 1px solid transparent;
+
+  .folder-select {
+    position: absolute;
+    top: -1000px;
+  }
 }
