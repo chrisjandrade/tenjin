@@ -3,6 +3,7 @@ const _ = require('lodash'),
   FacialRecognition = require('../services/facial-recognition'),
   FileService = require('../services/file'),
   DB = require('../services/db'),
+  Elastic = require('../services/elastic'),
   { ImageModel } = require('../models/image');
 
 module.exports = function (config) {
@@ -12,6 +13,16 @@ module.exports = function (config) {
     facialRecognition: FacialRecognition(config),
     fileService: FileService(config),
     db: DB(config),
+    elastic: Elastic(config),
+
+    init: _.once(function () {
+      controller.db.connect();
+
+      controller.elastic.connect().then(
+        () => controller.elastic.createIndex());
+
+      return controller;
+    }),
 
     _findImageFiles: async function (dir) {
       const files = await controller.fileService.analyzeAllFiles(dir);
@@ -27,10 +38,6 @@ module.exports = function (config) {
 
     scrape: async function (req, res) {
       const directory = path.join(__dirname, '../../data');
-
-      if (!controller.db.isConnected) {
-        await controller.db.connect();
-      }
 
       if (_.isEmpty(directory)) {
         res.status(400).json({
@@ -63,5 +70,5 @@ module.exports = function (config) {
 
   };
 
-  return controller;
+  return controller.init();
 };
