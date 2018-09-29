@@ -1,6 +1,7 @@
 const glob = require('glob'),
   mmm = require('mmmagic'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  md5 = require('md5-file');
 
 module.exports = function (config) {
 
@@ -39,7 +40,8 @@ module.exports = function (config) {
       
       return {
         file: fd,
-        mimeType
+        mimeType,
+        md5: md5.sync(fd)
       };
     },
 
