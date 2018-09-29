@@ -1,4 +1,5 @@
-const elasticsearch = require('elasticsearch');
+const elasticsearch = require('elasticsearch'),
+  _ = require('lodash');
 
 module.exports = function (config) {
 
@@ -21,8 +22,6 @@ module.exports = function (config) {
               connected: true,
               client
             });
-            
-
 
             resolve(client);
           }
@@ -43,6 +42,18 @@ module.exports = function (config) {
 
     indexExists: function () {
       return service.client.indices.exists({ index: 'tenjin' });
+    },
+
+    bulkIndex: function (items) {
+      return service.client.bulk({
+        body: _(items).
+          map(item => [
+            { index: { _index: 'tenjin', _type: 'image' } },
+            item
+          ]).
+          flatten().
+          value()
+      });
     }
 
   };
