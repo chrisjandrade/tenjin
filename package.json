@@ -28,7 +28,7 @@
     "face-recognition": "^0.9.3",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.2",
-    "jquery": "^1.9.1",
+    "jquery": "^3.4.0",
     "lodash": "^4.17.10",
     "md5-file": "^4.0.0",
     "mmmagic": "^0.5.0",
