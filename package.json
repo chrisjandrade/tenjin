@@ -36,7 +36,7 @@
     "mongoose": "^5.7.5",
     "node-sass": "^4.9.2",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.4.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "typeface-coda-caption": "0.0.54",
